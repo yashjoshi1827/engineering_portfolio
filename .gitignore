@@ -11,3 +11,8 @@ local-backups/
 *text-export*.json
 *.zip
 .sites-runtime/
+
+# Cloud credentials and local environment files
+.env
+.env.*
+!.env.example

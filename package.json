@@ -1,16 +1,23 @@
 {
   "name": "yash-engineering-portfolio",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Vibrant personal engineering portfolio and browser-local journal",
+  "description": "Personal engineering journal with owner authentication, offline drafts and private cloud sync",
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "check": "node tests/check.mjs && node tests/publish.test.mjs",
+    "check": "node tests/check.mjs && node tests/publish.test.mjs && node tests/sync.test.mjs && node tests/database.test.mjs",
     "build": "node scripts/build.mjs",
     "publish:content": "node scripts/publish-content.mjs"
   },
   "type": "module",
   "engines": {
     "node": ">=22"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.117.3"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.9",
+    "esbuild": "0.28.2"
   }
 }

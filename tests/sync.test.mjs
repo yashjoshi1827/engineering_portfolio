@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {acknowledge,mergeRemote,cleanRecord} from '../dist/sync-core.js';
+const sent={id:'a',title:'First',_revision:1,_dirty:true,_operation:'op1'};
+const saved={id:'a',revision:2,payload:{id:'a',title:'First'},operation_id:'op1',deleted:false};
+assert.equal(acknowledge(sent,sent,{ok:true,record:saved})._dirty,false);
+const edited={...sent,title:'Edited during upload',_operation:'op2'};
+const result=acknowledge(edited,sent,{ok:true,record:saved});
+assert.equal(result.title,'Edited during upload');assert.equal(result._dirty,true);assert.equal(result._revision,2);
+const competing={...saved,revision:3,operation_id:'op-other',payload:{title:'Other device'}};
+const conflict=mergeRemote(edited,competing);
+assert.equal(conflict.title,edited.title);assert.equal(conflict._conflict.payload.title,'Other device');assert.equal(conflict._dirty,true);
+assert.equal(mergeRemote(sent,saved)._dirty,false,'Acknowledgment lost over network must not cause duplicate edits');
+assert.equal(mergeRemote({...sent,_dirty:false}, {...competing,deleted:true})._deleted,true);
+assert.deepEqual(cleanRecord({...sent,_conflict:{secret:'metadata'}}),{id:'a',title:'First'});
+console.log('Passed sync cases: in-flight edits preserved, conflict copies retained, lost acknowledgment recovered, deletion propagated.');
