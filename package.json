@@ -1,0 +1,16 @@
+{
+  "name": "yash-engineering-portfolio",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Vibrant personal engineering portfolio and browser-local journal",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "check": "node tests/check.mjs && node tests/publish.test.mjs",
+    "build": "node scripts/build.mjs",
+    "publish:content": "node scripts/publish-content.mjs"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  }
+}
